@@ -2,11 +2,14 @@ html {
   box-sizing: border-box;
 }
 
-*, *:before, *:after {
+*,
+*:before,
+*:after {
   box-sizing: inherit;
 }
 
-html, body {
+html,
+body {
   height: 100%;
   width: 100%;
   overflow: hidden;
@@ -18,37 +21,49 @@ body {
   position: absolute;
 }
 
-body, input {
+body,
+input {
   font: menu;
 }
 
-textarea, input, div, button {
+textarea,
+input,
+div,
+button {
   outline: none;
   margin: 0;
 }
 
 .controls {
+  width: 100%;
+  display: flex;
   background-color: rgb(217, 241, 238);
   padding: 10px 10px 10px 10px;
 }
 
+.controls > * + * {
+  margin-left: 0.5rem;
+}
+
 button {
   font-size: 14px;
-  background-color: rgb(181, 220, 216);
+  background-color: rebeccapurple;
+  color: white;
+  font-weight: 700;
   border: none;
   padding: 0.5em 1em;
+  border-radius: 4px;
 }
 
 button:hover {
-  background-color: rgb(156, 198, 192);
+  opacity: 0.75;
 }
 
 button:active {
-  background-color: rgb(144, 182, 177);
 }
 
 button:disabled {
-  background-color: rgb(196, 204, 202);
+  background-color: #999;
 }
 
 .container {
@@ -64,7 +79,8 @@ button:disabled {
   display: flex;
 }
 
-.raw-markdown, .rendered-html {
+.raw-markdown,
+.rendered-html {
   min-height: 100%;
   max-width: 50%;
   flex-grow: 1;
@@ -74,7 +90,7 @@ button:disabled {
 }
 
 .raw-markdown {
-  border: 5px solid rgb(238, 252, 250);;
+  border: 5px solid rgb(238, 252, 250);
   background-color: rgb(238, 252, 250);
   font-family: monospace;
 }
@@ -85,6 +101,6 @@ button:disabled {
 }
 
 .raw-markdown.drag-error {
-  background-color: rgba(170, 57, 57,1);
-  border-color: rgba(255,170,170,1);
+  background-color: rgba(170, 57, 57, 1);
+  border-color: rgba(255, 170, 170, 1);
 }
