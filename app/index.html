@@ -9,21 +9,61 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Fire Sale</title>
     <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="stylesheet" href="tw-styles.css" type="text/css" />
   </head>
-  <body>
-    <section class="controls">
-      <button id="new-file">New File</button>
-      <button id="open-file">Open File</button>
-      <button id="save-markdown" disabled>Save as Markdown</button>
-      <button id="revert" disabled>Revert</button>
-      <button id="save-html">Save as HTML</button>
-      <button id="show-file" disabled>Show File</button>
-      <button id="open-in-default" disabled>Open in Default Application</button>
+  <body class="text-base anti-aliased">
+    <section class="p-4 font-bold text-white bg-purple-600">
+      <button
+        id="new-file"
+        class="px-2 py-1 font-semibold font-bold text-white rounded hover:bg-purple-200 hover:text-purple-800"
+      >
+        New File
+      </button>
+      <button
+        class="px-2 py-1 ml-2 font-semibold font-bold text-white rounded hover:bg-purple-200 hover:text-purple-800"
+        id="open-file"
+      >
+        Open File
+      </button>
+      <button
+        class="px-2 py-1 ml-2 font-semibold font-bold text-white rounded hover:bg-purple-200 hover:text-purple-800"
+        id="save-markdown"
+        disabled
+      >
+        Save as Markdown
+      </button>
+      <button
+        class="px-2 py-1 ml-2 font-semibold font-bold text-white rounded hover:bg-purple-200 hover:text-purple-800"
+        id="revert"
+        disabled
+      >
+        Revert
+      </button>
+      <button
+        class="px-2 py-1 ml-2 font-semibold font-bold text-white rounded hover:bg-purple-200 hover:text-purple-800"
+        id="save-html"
+      >
+        Save as HTML
+      </button>
+      <button
+        class="px-2 py-1 ml-2 font-semibold font-bold text-white rounded hover:bg-purple-200 hover:text-purple-800"
+        id="show-file"
+        disabled
+      >
+        Show File
+      </button>
+      <button
+        class="px-2 py-1 ml-2 font-semibold font-bold text-white rounded hover:bg-purple-200 hover:text-purple-800"
+        id="open-in-default"
+        disabled
+      >
+        Open in Default Application
+      </button>
     </section>
 
     <section class="content">
       <label for="markdown" hidden>Markdown Content</label>
-      <textarea class="raw-markdown" id="markdown"></textarea>
+      <textarea class="bg-purple-100 raw-markdown" id="markdown"></textarea>
       <div class="rendered-html" id="html"></div>
     </section>
 
