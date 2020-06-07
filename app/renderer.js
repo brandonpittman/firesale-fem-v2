@@ -1,6 +1,6 @@
 const path = require('path');
 const { remote, ipcRenderer } = require('electron');
-const { getFileFromUser } = remote.require('./main');
+const { getFileFromUser, saveMarkdown, saveHtml } = remote.require('./main');
 const marked = require('marked');
 const currentWindow = remote.getCurrentWindow();
 
@@ -23,6 +23,12 @@ const renderMarkdownToHtml = markdown => {
   htmlView.innerHTML = marked(markdown, { sanitize: true });
 };
 
+revertButton.addEventListener('click', () => {
+  markdownView.value = originalContent;
+  renderMarkdownToHtml(originalContent);
+  updateUserInterface(false);
+});
+
 markdownView.addEventListener('keyup', event => {
   const currentContent = event.target.value;
   renderMarkdownToHtml(currentContent);
@@ -33,22 +39,34 @@ openFileButton.addEventListener('click', () => {
   getFileFromUser();
 });
 
-const updateUserInterface = isDirty => {
+saveHtmlButton.addEventListener('click', () => {
+  let html = htmlView.innerHTML;
+  saveHtml(html);
+});
+
+saveMarkdownButton.addEventListener('click', () => {
+  let currentContent = markdownView.value;
+  saveMarkdown(filePath, currentContent);
+  originalContent = currentContent;
+  updateUserInterface();
+});
+
+const updateUserInterface = (isDirty = false) => {
   let title = appTitle;
   title = filePath
     ? `${path.basename(filePath)} - ${title}`
-    : `untitled.${defaultExtension} - ${title}`;
+    : `Untitled - ${title}`;
 
   isDirty && (title = `${title} (Unsaved changes)`);
   currentWindow.setTitle(title);
-  currentWindow.setRepresentedFilename(filePath);
+  filePath && currentWindow.setRepresentedFilename(filePath);
   currentWindow.setDocumentEdited(isDirty);
 
   saveMarkdownButton.disabled = !isDirty;
   revertButton.disabled = !isDirty;
 };
 
-ipcRenderer.on('file-opened', (event, file, content) => {
+ipcRenderer.on('file-opened', (_event, file, content) => {
   filePath = file;
   originalContent = content;
   markdownView.value = content;
@@ -56,5 +74,4 @@ ipcRenderer.on('file-opened', (event, file, content) => {
   updateUserInterface();
 });
 
-updateUserInterface(false);
-
+updateUserInterface();
