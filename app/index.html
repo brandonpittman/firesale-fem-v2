@@ -61,10 +61,15 @@
       </button>
     </section>
 
-    <section class="content">
-      <label for="markdown" hidden>Markdown Content</label>
-      <textarea class="bg-purple-100 raw-markdown" id="markdown"></textarea>
-      <div class="rendered-html" id="html"></div>
+    <section class="flex content">
+      <label class="block w-1/2">
+        <textarea
+          class="w-full min-h-full p-8 overflow-hidden bg-purple-100 resize-none flex-grow-1"
+          id="markdown"
+        ></textarea>
+        <span hidden>Markdown Content</span></label
+      >
+      <div class="p-8 rich-text" id="html"></div>
     </section>
 
     <script>
