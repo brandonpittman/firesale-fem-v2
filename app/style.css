@@ -62,16 +62,11 @@ button:disabled {
   font-size: 16px;
 }
 
-.raw-markdown {
-  border: 5px solid rgb(238, 252, 250);
-  font-family: monospace;
+.drag-over {
+  background-color: rgb(75, 160, 151) !important;
 }
 
-.raw-markdown.drag-over {
-  border-color: rgb(75, 160, 151);
-}
-
-.raw-markdown.drag-error {
-  background-color: rgba(170, 57, 57, 1);
-  border-color: rgba(255, 170, 170, 1);
+.drag-error {
+  background-color: rgba(170, 57, 57, 1) !important;
+  border-color: rgba(255, 170, 170, 1) !important;
 }

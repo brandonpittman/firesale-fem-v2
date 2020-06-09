@@ -19,6 +19,28 @@ const saveHtmlButton = document.querySelector('#save-html');
 const showFileButton = document.querySelector('#show-file');
 const openInDefaultButton = document.querySelector('#open-in-default');
 
+document.addEventListener('dragstart', e => e.preventDefault());
+document.addEventListener('dragleave', e => e.preventDefault());
+document.addEventListener('dragover', e => e.preventDefault());
+document.addEventListener('drop', e => e.preventDefault());
+
+const getDraggedFile = event => event.dataTransfer.items[0];
+const getDroppedFile = event => event.dataTransfer.files[0];
+const fileTypeIsSupported = file =>
+  ['text/plain', 'text/markdown'].includes(file.type);
+
+markdownView.addEventListener('dragover', event => {
+  const file = getDraggedFile(event);
+
+  if (fileTypeIsSupported(file)) {
+    markdownView.classList.remove('bg-purple-100');
+    markdownView.classList.add('bg-green-200');
+  } else {
+    markdownView.classList.remove('bg-purple-100');
+    markdownView.classList.add('bg-red-200');
+  }
+});
+
 const renderMarkdownToHtml = markdown => {
   htmlView.innerHTML = marked(markdown, { sanitize: true });
 };
