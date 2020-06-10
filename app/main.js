@@ -6,7 +6,12 @@ let mainWindow = null;
 app.on("ready", () => {
   console.log("App ready...");
 
-  mainWindow = new BrowserWindow({ show: false, width: 1024, height: 800 });
+  mainWindow = new BrowserWindow({
+    webPreferences: { nodeIntegration: true },
+    show: false,
+    width: 1024,
+    height: 800,
+  });
 
   Menu.setApplicationMenu(applicationMenu);
 
