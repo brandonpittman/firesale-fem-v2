@@ -1,6 +1,7 @@
 const path = require('path');
-const { remote, ipcRenderer } = require('electron');
-const { getFileFromUser, saveMarkdown, saveHtml } = remote.require('./main');
+const { remote, ipcRenderer, shell } = require('electron');
+const main = remote.require('./main');
+const { openFile, getFileFromUser, saveMarkdown, saveHtml } = main;
 const marked = require('marked');
 const currentWindow = remote.getCurrentWindow();
 
@@ -24,6 +25,11 @@ document.addEventListener('dragleave', e => e.preventDefault());
 document.addEventListener('dragover', e => e.preventDefault());
 document.addEventListener('drop', e => e.preventDefault());
 
+const cleanUpClasses = () => {
+  markdownView.classList.add('bg-purple-100');
+  markdownView.classList.remove('bg-green-200');
+  markdownView.classList.remove('bg-red-200');
+};
 const getDraggedFile = event => event.dataTransfer.items[0];
 const getDroppedFile = event => event.dataTransfer.files[0];
 const fileTypeIsSupported = file =>
@@ -41,14 +47,30 @@ markdownView.addEventListener('dragover', event => {
   }
 });
 
+markdownView.addEventListener('dragleave', () => cleanUpClasses());
+
+markdownView.addEventListener('drop', event => {
+  const file = getDroppedFile(event);
+
+  if (fileTypeIsSupported(file)) {
+    openFile(file.path);
+  } else {
+    alert('File type not supported.');
+  }
+  cleanUpClasses();
+});
+
 const renderMarkdownToHtml = markdown => {
   htmlView.innerHTML = marked(markdown, { sanitize: true });
 };
 
 revertButton.addEventListener('click', () => {
-  markdownView.value = originalContent;
-  renderMarkdownToHtml(originalContent);
-  updateUserInterface(false);
+  const result = confirm('Are you sure you want to revert?');
+  if (result) {
+    markdownView.value = originalContent;
+    renderMarkdownToHtml(originalContent);
+    updateUserInterface(false);
+  }
 });
 
 markdownView.addEventListener('keyup', event => {
@@ -73,6 +95,16 @@ saveMarkdownButton.addEventListener('click', () => {
   updateUserInterface();
 });
 
+showFileButton.addEventListener('click', event => {
+  if (!filePath) return alert('Nope!');
+  shell.showItemInFolder(filePath);
+});
+
+openInDefaultButton.addEventListener('click', event => {
+  if (!filePath) return alert('Nope!');
+  shell.openItem(filePath);
+});
+
 const updateUserInterface = (isDirty = false) => {
   let title = appTitle;
   title = filePath
@@ -86,6 +118,8 @@ const updateUserInterface = (isDirty = false) => {
 
   saveMarkdownButton.disabled = !isDirty;
   revertButton.disabled = !isDirty;
+  showFileButton.disabled = !filePath;
+  openInDefaultButton.disabled = !filePath;
 };
 
 ipcRenderer.on('file-opened', (_event, file, content) => {
